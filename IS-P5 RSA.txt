@@ -1,0 +1,44 @@
+package exp1;
+
+import java.security.*;
+import javax.crypto.Cipher;
+import java.util.Base64;
+import java.util.Scanner;
+
+public class RSA {
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Message: ");
+        String msg = sc.nextLine();
+
+        // Generate RSA Key Pair
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+        kpg.initialize(512);
+
+        KeyPair kp = kpg.generateKeyPair();
+
+        Cipher c = Cipher.getInstance("RSA");
+
+        // Encryption
+        c.init(Cipher.ENCRYPT_MODE, kp.getPublic());
+        byte[] enc = c.doFinal(msg.getBytes());
+
+        // Decryption
+        c.init(Cipher.DECRYPT_MODE, kp.getPrivate());
+        byte[] dec = c.doFinal(enc);
+
+        System.out.println("\nEncrypted Text: "
+                + Base64.getEncoder().encodeToString(enc));
+
+        System.out.println("Decrypted Text: "
+                + new String(dec));
+
+        sc.close();
+    }
+}
+-------------------------------------------------------------------------
+INPUT:
+Enter Message: Hello

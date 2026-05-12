@@ -1,0 +1,49 @@
+package exp1;
+
+import java.util.Scanner;
+
+public class TranspositionCipher {
+
+    static String encrypt(String msg, int key) {
+        String enc = "";
+
+        for (int i = 0; i < key; i++)
+            for (int j = i; j < msg.length(); j += key)
+                enc += msg.charAt(j);
+
+        return enc;
+    }
+
+    static String decrypt(String cipher, int key) {
+        char[] dec = new char[cipher.length()];
+        int k = 0;
+
+        for (int i = 0; i < key; i++)
+            for (int j = i; j < cipher.length(); j += key)
+                dec[j] = cipher.charAt(k++);
+
+        return new String(dec);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine().replace(" ", "");
+
+        System.out.print("Enter key: ");
+        int key = sc.nextInt();
+
+        String enc = encrypt(msg, key);
+        System.out.println("Encrypted Message: " + enc);
+
+        System.out.println("Decrypted Message: " + decrypt(enc, key));
+
+        sc.close();
+    }
+}
+--------------------------------------------------------------------------
+input:
+Enter message: hello
+Enter key: 3
