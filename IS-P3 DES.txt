@@ -1,0 +1,42 @@
+package exp1;
+
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
+import java.util.Scanner;
+
+public class SimpleDES {
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Message: ");
+        String msg = sc.nextLine();
+
+        System.out.print("Enter 8-character Key: ");
+        String keyText = sc.nextLine();
+
+        byte[] keyBytes = keyText.getBytes();
+
+        SecretKey key = new SecretKeySpec(keyBytes, "DES");
+
+        Cipher c = Cipher.getInstance("DES");
+
+        // Encryption
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] enc = c.doFinal(msg.getBytes());
+
+        // Decryption
+        c.init(Cipher.DECRYPT_MODE, key);
+        byte[] dec = c.doFinal(enc);
+
+        System.out.println("\nEncrypted Text: "
+                + Base64.getEncoder().encodeToString(enc));
+
+        System.out.println("Decrypted Text: "
+                + new String(dec));
+
+        sc.close();
+    }
+}

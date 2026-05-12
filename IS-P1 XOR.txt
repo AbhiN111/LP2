@@ -1,0 +1,41 @@
+package exp1;
+
+import java.util.Scanner;
+
+public class BitwiseOperation {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter String: ");
+        String s = sc.nextLine();
+
+        System.out.println("Original String: " + s);
+        System.out.println("\nChar | AND-127 | XOR-127");
+
+        String andStr = "";
+        String xorStr = "";
+
+        for (int i = 0; i < s.length(); i++) {
+
+            char c = s.charAt(i);
+
+            int a = c & 127;
+            int x = c ^ 127;
+
+            andStr += (char) a;
+            xorStr += (char) x;
+
+            System.out.println(c + "   | " + a + "      | " + x);
+        }
+
+        System.out.println("\nString after AND with 127: " + andStr);
+        System.out.println("String after XOR with 127: " + xorStr);
+
+        sc.close();
+    }
+}
+---------------------------------------------------------------------
+input:
+Enter String: hello world

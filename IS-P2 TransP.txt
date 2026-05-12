@@ -1,0 +1,112 @@
+package exp1;
+
+import java.util.Scanner;
+
+public class TranspositionCipher {
+
+    // Encryption
+    static String encrypt(String text, int rails) {
+
+        if (rails == 1)
+            return text;
+
+        char[][] fence = new char[rails][text.length()];
+
+        int row = 0;
+        boolean down = false;
+
+        // Fill zig-zag pattern
+        for (int i = 0; i < text.length(); i++) {
+
+            fence[row][i] = text.charAt(i);
+
+            if (row == 0 || row == rails - 1)
+                down = !down;
+
+            row += down ? 1 : -1;
+        }
+
+        // Read row-wise
+        String cipher = "";
+
+        for (int i = 0; i < rails; i++)
+            for (int j = 0; j < text.length(); j++)
+                if (fence[i][j] != 0)
+                    cipher += fence[i][j];
+
+        return cipher;
+    }
+
+    // Decryption
+    static String decrypt(String cipher, int rails) {
+
+        if (rails == 1)
+            return cipher;
+
+        char[][] fence = new char[rails][cipher.length()];
+
+        int row = 0;
+        boolean down = false;
+
+        // Mark positions
+        for (int i = 0; i < cipher.length(); i++) {
+
+            fence[row][i] = '*';
+
+            if (row == 0 || row == rails - 1)
+                down = !down;
+
+            row += down ? 1 : -1;
+        }
+
+        // Fill cipher text
+        int k = 0;
+
+        for (int i = 0; i < rails; i++)
+            for (int j = 0; j < cipher.length(); j++)
+                if (fence[i][j] == '*')
+                    fence[i][j] = cipher.charAt(k++);
+
+        // Read zig-zag
+        String plain = "";
+
+        row = 0;
+        down = false;
+
+        for (int i = 0; i < cipher.length(); i++) {
+
+            plain += fence[row][i];
+
+            if (row == 0 || row == rails - 1)
+                down = !down;
+
+            row += down ? 1 : -1;
+        }
+
+        return plain;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Plain Text: ");
+        String text = sc.nextLine();
+
+        System.out.print("Enter Number of Rails: ");
+        int rails = sc.nextInt();
+
+        String cipher = encrypt(text, rails);
+
+        System.out.println("\nEncrypted Text: " + cipher);
+
+        String decrypted = decrypt(cipher, rails);
+
+        System.out.println("Decrypted Text: " + decrypted);
+
+        sc.close();
+    }
+}
+---------------------------------------------------------------------------------------
+Enter Plain Text: hello
+Enter Number of Rails: 3

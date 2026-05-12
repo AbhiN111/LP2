@@ -1,0 +1,106 @@
+package exp1;
+
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class RSA {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Input prime numbers
+        System.out.print("Enter first prime number p: ");
+        BigInteger p = sc.nextBigInteger();
+
+        System.out.print("Enter second prime number q: ");
+        BigInteger q = sc.nextBigInteger();
+
+        sc.nextLine();
+
+        // Input message
+        System.out.print("\nEnter Plain Text Message: ");
+        String text = sc.nextLine();
+
+        // Step 1: Calculate n = p * q
+        BigInteger n = p.multiply(q);
+
+        // Check if n is large enough
+        if (n.compareTo(BigInteger.valueOf(255)) <= 0) {
+
+            System.out.println("\nError: n must be greater than 255");
+            sc.close();
+            return;
+        }
+
+        // Step 2: Calculate phi(n)
+        BigInteger phi =
+                p.subtract(BigInteger.ONE)
+                 .multiply(q.subtract(BigInteger.ONE));
+
+        System.out.println("\n--- Key Generation ---");
+        System.out.println("n = " + n);
+        System.out.println("phi(n) = " + phi);
+
+        // Step 3: Find public key e
+        BigInteger e = BigInteger.valueOf(2);
+
+        while (e.compareTo(phi) < 0) {
+
+            if (e.gcd(phi).equals(BigInteger.ONE))
+                break;
+
+            e = e.add(BigInteger.ONE);
+        }
+
+        System.out.println("Public Key (e) = " + e);
+
+        // Step 4: Calculate private key d
+        BigInteger d = e.modInverse(phi);
+
+        System.out.println("Private Key (d) = " + d);
+
+        System.out.println("Public Key  = (" + e + ", " + n + ")");
+        System.out.println("Private Key = (" + d + ", " + n + ")");
+
+        // -------- Encryption --------
+        System.out.println("\n--- Encryption ---");
+
+        BigInteger[] encrypted = new BigInteger[text.length()];
+
+        System.out.print("Encrypted Message: ");
+
+        for (int i = 0; i < text.length(); i++) {
+
+            BigInteger m =
+                    BigInteger.valueOf((int) text.charAt(i));
+
+            encrypted[i] = m.modPow(e, n);
+
+            System.out.print(encrypted[i] + " ");
+        }
+
+        // -------- Decryption --------
+        System.out.println("\n\n--- Decryption ---");
+
+        StringBuilder decrypted = new StringBuilder();
+
+        for (int i = 0; i < encrypted.length; i++) {
+
+            BigInteger c = encrypted[i];
+
+            BigInteger m = c.modPow(d, n);
+
+            decrypted.append((char) m.intValue());
+        }
+
+        System.out.println("Decrypted Message: " + decrypted);
+
+        sc.close();
+    }
+}
+--------------------------------------------------------------------------------
+Enter first prime number p: 19
+Enter second prime number q: 41
+
+Enter Plain Text Message: hello my name is abhishek
