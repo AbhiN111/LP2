@@ -1,0 +1,72 @@
+package exp1;
+
+import java.util.Scanner;
+
+public class SimpleDES {
+
+    // XOR Function
+    static String xorStrings(String a, String b) {
+
+        String result = "";
+
+        for (int i = 0; i < a.length(); i++) {
+            result += (char)(a.charAt(i) ^ b.charAt(i));
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter 8 characters plaintext: ");
+        String text = sc.nextLine();
+
+        if (text.length() != 8) {
+
+            System.out.println("Error: Enter exactly 8 characters");
+            return;
+        }
+
+        System.out.println("Plain Text: " + text);
+
+        // Split into Left and Right blocks
+        String l0 = text.substring(0, 4);
+        String r0 = text.substring(4, 8);
+
+        System.out.println("Left Block (L0): " + l0);
+        System.out.println("Right Block (R0): " + r0);
+
+        // XOR Operation
+        String r1 = xorStrings(l0, r0);
+
+        System.out.print("XOR Result (ASCII): ");
+
+        for (char c : r1.toCharArray()) {
+            System.out.print((int)c + " ");
+        }
+
+        System.out.println();
+
+        // Encryption
+        String l1 = r0;
+
+        String cipher = l1 + r1;
+
+        System.out.println("\nEncrypted Cipher: " + cipher);
+
+        // -------- Decryption --------
+
+        String dl0 = cipher.substring(0, 4);
+        String dr0 = cipher.substring(4, 8);
+
+        String originalLeft = xorStrings(dl0, dr0);
+
+        String decrypted = originalLeft + dl0;
+
+        System.out.println("\nDecrypted Text: " + decrypted);
+
+        sc.close();
+    }
+}
