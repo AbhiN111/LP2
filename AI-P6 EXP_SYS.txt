@@ -1,0 +1,78 @@
+# Expert System: Employee Performance Evaluation
+
+def evaluate_employee(punctuality,
+                      teamwork,
+                      productivity,
+                      creativity):
+
+    score = 0
+
+    # Rule-based scoring
+
+    # Punctuality
+    if punctuality == "good":
+        score += 2
+
+    elif punctuality == "average":
+        score += 1
+
+    # Teamwork
+    if teamwork == "good":
+        score += 2
+
+    elif teamwork == "average":
+        score += 1
+
+    # Productivity
+    if productivity == "high":
+        score += 3
+
+    elif productivity == "medium":
+        score += 2
+
+    else:
+        score += 1
+
+    # Creativity
+    if creativity == "innovative":
+        score += 2
+
+    elif creativity == "normal":
+        score += 1
+
+    # Final Decision
+    if score >= 8:
+        return "Excellent Performance"
+
+    elif score >= 6:
+        return "Good Performance"
+
+    elif score >= 4:
+        return "Average Performance"
+
+    else:
+        return "Poor Performance"
+
+
+# -------------------------
+# Driver Code
+# -------------------------
+
+print("Employee Performance Evaluation Expert System")
+
+punctuality = input("Punctuality (good/average/poor): ").lower()
+
+teamwork = input("Teamwork (good/average/poor): ").lower()
+
+productivity = input("Productivity (high/medium/low): ").lower()
+
+creativity = input("Creativity (innovative/normal/low): ").lower()
+
+result = evaluate_employee(
+    punctuality,
+    teamwork,
+    productivity,
+    creativity
+)
+
+print("\nFinal Evaluation:", result)

@@ -1,0 +1,124 @@
+# Constraint Satisfaction Problem (CSP)
+# N-Queens using Backtracking and Branch & Bound
+
+# Function to check whether queen can be placed safely
+def is_safe(board, row, col, n):
+
+    # Check column
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+
+    # Check upper-left diagonal
+    for i, j in zip(range(row, -1, -1),
+                    range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check upper-right diagonal
+    for i, j in zip(range(row, -1, -1),
+                    range(col, n)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+
+# -----------------------------
+# Backtracking Solution
+# -----------------------------
+def solve_backtracking(board, row, n):
+
+    if row >= n:
+        return True
+
+    for col in range(n):
+
+        if is_safe(board, row, col, n):
+
+            board[row][col] = 1
+
+            if solve_backtracking(board, row + 1, n):
+                return True
+
+            # Backtrack
+            board[row][col] = 0
+
+    return False
+
+
+def nqueens_backtracking(n):
+
+    board = [[0] * n for _ in range(n)]
+
+    if solve_backtracking(board, 0, n):
+
+        print("\nSolution using Backtracking:")
+
+        for row in board:
+            print(row)
+
+    else:
+        print("No solution exists")
+
+
+# -----------------------------
+# Branch and Bound Solution
+# -----------------------------
+def solve_branch_bound(n):
+
+    col_used = [False] * n
+    diag1_used = [False] * (2 * n - 1)
+    diag2_used = [False] * (2 * n - 1)
+
+    board = [[0] * n for _ in range(n)]
+
+    def place_queen(row):
+
+        if row >= n:
+            return True
+
+        for col in range(n):
+
+            if (not col_used[col] and
+                not diag1_used[row - col + n - 1] and
+                not diag2_used[row + col]):
+
+                board[row][col] = 1
+
+                col_used[col] = True
+                diag1_used[row - col + n - 1] = True
+                diag2_used[row + col] = True
+
+                if place_queen(row + 1):
+                    return True
+
+                # Backtrack
+                board[row][col] = 0
+
+                col_used[col] = False
+                diag1_used[row - col + n - 1] = False
+                diag2_used[row + col] = False
+
+        return False
+
+    if place_queen(0):
+
+        print("\nSolution using Branch & Bound:")
+
+        for row in board:
+            print(row)
+
+    else:
+        print("No solution exists")
+
+
+# -----------------------------
+# Driver Code
+# -----------------------------
+n = int(input("Enter number of queens: "))
+
+nqueens_backtracking(n)
+
+solve_branch_bound(n)
+--------------------------------------------------------------------------------------------Enter number of queens: 5

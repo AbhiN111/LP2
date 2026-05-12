@@ -1,0 +1,53 @@
+from collections import deque
+
+# Undirected Graph
+graph = {
+    1: [2, 3],
+    2: [1, 4, 5],
+    3: [1, 6],
+    4: [2],
+    5: [2, 6],
+    6: [3, 5]
+}
+
+# -------------------------
+# Depth First Search (Recursive)
+# -------------------------
+def dfs(graph, node, visited):
+    if node not in visited:
+        print(node, end=" ")
+        visited.add(node)
+
+        for neighbour in graph[node]:
+            dfs(graph, neighbour, visited)
+
+# -------------------------
+# Breadth First Search
+# -------------------------
+def bfs(graph, start):
+    visited = set()
+    queue = deque()
+
+    visited.add(start)
+    queue.append(start)
+
+    while queue:
+        node = queue.popleft()
+        print(node, end=" ")
+
+        for neighbour in graph[node]:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append(neighbour)
+
+# -------------------------
+# Driver Code
+# -------------------------
+print("Depth First Search (DFS):")
+visited = set()
+dfs(graph, 1, visited)
+
+print("\n")
+
+print("Breadth First Search (BFS):")
+bfs(graph, 1)

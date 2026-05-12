@@ -1,0 +1,56 @@
+# Elementary Chatbot for Customer Interaction
+# Application: Shopping Website Customer Support
+
+def chatbot():
+
+    print("Welcome to ShopEasy Customer Support Chatbot!")
+    print("Type 'exit' to end the chat.\n")
+
+    while True:
+
+        user_input = input("You: ").lower()
+
+        # Exit condition
+        if user_input == "exit":
+
+            print("Chatbot: Thank you for visiting ShopEasy. Have a great day!")
+            break
+
+        # Greeting
+        elif "hello" in user_input or "hi" in user_input:
+
+            print("Chatbot: Hello! How can I assist you today?")
+
+        # Return or Refund
+        elif "return" in user_input or "refund" in user_input:
+
+            print("Chatbot: You can return products within 7 days of delivery.")
+
+        # Order Tracking
+        elif "order" in user_input or "track" in user_input:
+
+            print("Chatbot: Please provide your order ID to track your order.")
+
+        # Payment Queries
+        elif "payment" in user_input or "pay" in user_input:
+
+            print("Chatbot: We accept UPI, Debit/Credit Cards and Net Banking.")
+
+        # Offers and Discounts
+        elif "offers" in user_input or "discount" in user_input:
+
+            print("Chatbot: We currently have exciting discounts on electronics and clothing.")
+
+        # Contact Information
+        elif "contact" in user_input or "help" in user_input:
+
+            print("Chatbot: Contact us at support@shopeasy.com")
+
+        # Default Response
+        else:
+
+            print("Chatbot: Sorry, I didn't understand that. Please rephrase.")
+
+
+# Driver Code
+chatbot()
