@@ -1,0 +1,79 @@
+package exp1;
+
+import java.util.*;
+
+public class RSA {
+
+    static int gcd(int a, int b) {
+        while (b != 0) {
+            int t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    static int modInverse(int e, int phi) {
+        for (int d = 1; d < phi; d++) {
+            if ((d * e) % phi == 1)
+                return d;
+        }
+        return 1;
+    }
+
+    static long power(long a, long b, long mod) {
+        long result = 1;
+
+        while (b > 0) {
+            result = (result * a) % mod;
+            b--;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Simple RSA Encryption/Decryption");
+
+        System.out.print("Enter prime number p: ");
+        int p = sc.nextInt();
+
+        System.out.print("Enter another prime number q: ");
+        int q = sc.nextInt();
+        sc.nextLine();
+
+        int n = p * q;
+        int phi = (p - 1) * (q - 1);
+
+        int e = 3;
+
+        while (gcd(e, phi) != 1)
+            e += 2;
+
+        int d = modInverse(e, phi);
+
+        System.out.println("Public Key (e,n): (" + e + "," + n + ")");
+        System.out.println("Private Key (d,n): (" + d + "," + n + ")");
+
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine();
+
+        long enc[] = new long[msg.length()];
+
+        System.out.print("Encrypted Message: ");
+
+        for (int i = 0; i < msg.length(); i++) {
+            enc[i] = power(msg.charAt(i), e, n);
+            System.out.print(enc[i] + " ");
+        }
+
+        System.out.print("\nDecrypted Message: ");
+
+        for (int i = 0; i < msg.length(); i++) {
+            char ch = (char) power(enc[i], d, n);
+            System.out.print(ch);
+        }
+    }
+}
